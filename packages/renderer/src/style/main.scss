@@ -1,0 +1,103 @@
+@import 'generic.scss';
+
+html {
+  overflow-y: auto;
+}
+.relative {
+  position: relative;
+}
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background-color: var(--v-secondary7-base);
+  transition: background-color 3s;
+}
+.mediaCard {
+  backdrop-filter: blur(8px);
+}
+.mediaCard:hover {
+  border-radius: 4px;
+  box-shadow: 0 0 2pt 1pt var(--v-primary-base) !important;
+}
+.shadow {
+  box-shadow: 0 0 2pt 1pt var(--v-primary-base) !important;
+}
+.v-slider {
+  margin: 0px !important;
+}
+.setToDefaultIcon {
+  margin-left: -2px;
+}
+.relative {
+  position: relative;
+}
+.v-tab:hover > span {
+  color: var(--v-text-base) !important;
+}
+.v-tab--active > span {
+  color: var(--v-primary-base) !important;
+}
+.v-tab--active:hover > span {
+  color: var(--v-primary-base) !important;
+}
+.v-tabs > .v-tab:focus::before {
+  color: var(--v-text4-base);
+}
+.v-menu__content {
+  background-color: transparent;
+  backdrop-filter: blur(4px);
+}
+.v-list-item:hover > span {
+  color: var(--v-text-base) !important;
+}
+.v-list-item {
+  color: var(--v-text-base) !important;
+}
+.v-item--active > span {
+  color: var(--v-text-base) !important;
+}
+.menuCardHeight {
+  max-height: 400px;
+  overflow: auto;
+}
+.v-divider {
+  border-color: var(--v-secondary7-base);
+}
+.v-overlay {
+  backdrop-filter: blur(4px);
+}
+.v-overlay__content {
+  width: 100%;
+  height: 100%;
+}
+.v-color-picker__controls {
+  background-color: var(--v-secondary-base);
+}
+.v-color-picker__edit {
+  > .v-color-picker__input {
+    > input {
+      color: var(--v-text-base) !important;
+    }
+    > span {
+      color: var(--v-text2-base) !important;
+    }
+  }
+  > button > span > span {
+    color: var(--v-text2-base) !important;
+  }
+}
+// .v-list {
+//   background-color: var(--v-secondary-base) !important;
+// }
+// TODO look more this into the future default is opacity 0.24. But in light theme maybe the color is a bit too strong maybe we should lower it
+// .theme--dark.v-list-item--active:hover::before, .theme--dark.v-list-item--active::before {
+//   opacity: 0.24;
+// }
+
+// TODO maybe use this globally for every btn-icon
+// .v-btn--icon:hover > span > span {
+//   color: var(--v-text-base) !important;
+// }

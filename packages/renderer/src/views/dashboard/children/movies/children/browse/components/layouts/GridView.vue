@@ -1,0 +1,128 @@
+<template>
+  <v-virtual-scroll
+    ref="scroller"
+    class="overflow-x-hidden mr-3"
+    :style="scrollStyle"
+    :items="movies"
+    :item-height="itemHeight"
+    :bench="2"
+    @scroll="scroll()"
+  >
+    <template #default="{ item }">
+      <v-layout v-if="item !== true" class="my-1">
+        <v-flex v-for="(movie, index) in item" :key="index">
+          <GridCard :movie="movie" />
+        </v-flex>
+        <v-flex
+          v-for="i in moviesPerRow - item.length"
+          :key="moviesPerRow + i"
+          class="mr-3"
+        ></v-flex>
+      </v-layout>
+      <infinite-loading
+        v-if="item === true && infiniteLoadingEnabled"
+        spinner="waveDots"
+        @infinite="infiniteHandler"
+      ></infinite-loading>
+    </template>
+  </v-virtual-scroll>
+</template>
+
+<script>
+import sleep from '@/mixins/sleep'
+import browseMovies from '@/mixins/browseMovies'
+import GridCard from '@/views/dashboard/components/layout_components/movie/GridCard.vue'
+import InfiniteLoading from 'vue-infinite-loading'
+
+export default {
+  name: 'GridView',
+  components: { GridCard, InfiniteLoading },
+  mixins: [sleep, browseMovies],
+  data: () => ({
+    itemHeight: 0,
+    moviesPerRow: null,
+    prevScrollWidth: 0,
+    resizeObserver: null,
+  }),
+  computed: {
+    movies() {
+      try {
+        let movies = []
+        if (this.movieType === 'trending') {
+          movies = this.$store.state.Movies.movies[this.movieType][this.timeWindow]
+        } else {
+          movies = this.$store.state.Movies.movies[this.movieType][this.selectedGenre.id]
+        }
+        movies = movies.results.reduce((all, one, i) => {
+          const ch = Math.floor(i / this.moviesPerRow)
+          all[ch] = [].concat(all[ch] || [], one)
+          return all
+        }, [])
+        if (this.infiniteLoadingEnabled) {
+          movies.push(true)
+        }
+        return movies
+      } catch (error) {
+        return [true]
+      }
+    },
+    minCardWidth() {
+      return this.$store.state.Settings.Appearance.gridCardWidth
+    },
+    scrollStyle() {
+      if (this.scrollPosition < 4) {
+        return `top: calc(52px - ${this.scrollPosition}px);
+          margin-top: ${this.scrollPosition}px;`
+      }
+      return 'margin-top: 4px'
+    },
+  },
+  watch: {
+    minCardWidth() {
+      this.onResize()
+    },
+  },
+  beforeDestroy() {
+    this.resizeObserver.unobserve(this.$refs.scroller.$el.children[0])
+  },
+  mounted() {
+    this.$nextTick(async () => {
+      this.resizeObserver = new ResizeObserver(() => {
+        if (this.prevScrollWidth !== this.$refs.scroller.$el.children[0].clientWidth) {
+          this.onResize()
+          this.prevScrollWidth = this.$refs.scroller.$el.children[0].clientWidth
+        }
+      })
+      this.resizeObserver.observe(this.$refs.scroller.$el.children[0])
+      this.$store.commit('Movies/SET_INFINITE_LOADING', true)
+      await this.sleep(1)
+      if (this.$options.name === this.$store.state.Movies.scrollPosition.layout) {
+        this.$refs.scroller.$el.scrollTop = this.$store.state.Movies.scrollPosition.position
+      }
+    })
+  },
+  methods: {
+    onResize() {
+      const container = this.$refs.scroller.$el.children[0].clientWidth
+      const numOfMovies = parseInt(container / this.minCardWidth, 10)
+      this.itemHeight = (((container - 12 - numOfMovies * 12) / numOfMovies) * 3) / 2 + 12
+      this.moviesPerRow = numOfMovies
+    },
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+.v-virtual-scroll {
+  overflow: auto;
+  position: absolute;
+  height: auto;
+  top: 52px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+::v-deep .v-virtual-scroll__item {
+  padding-left: 12px;
+}
+</style>

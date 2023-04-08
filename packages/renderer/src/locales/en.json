@@ -1,0 +1,17 @@
+{
+  "dashboard": {
+    "components": {
+      "drawer": {
+        "Home": "Home",
+        "Movies": "Movies",
+        "TVSeries": "TV Series",
+        "Favourites": "Favourites",
+        "History": "History",
+        "WatchTogether": "Watch together"
+      },
+      "appbar": {
+        "Search": "Search"
+      }
+    }
+  }
+}

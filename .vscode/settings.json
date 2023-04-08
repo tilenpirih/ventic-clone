@@ -1,0 +1,15 @@
+{
+  "eslint.validate": [
+    "vue",
+    "javascript",
+    "javascriptreact",
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": false
+  },
+  "editor.formatOnSave": true,
+  "vetur.validation.template": false,
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false
+}

@@ -1,0 +1,17 @@
+{
+  "dashboard": {
+    "components": {
+      "drawer": {
+        "Home": "Domov",
+        "Movies": "Filmi",
+        "TVSeries": "Serije",
+        "Favourites": "Priljubljene",
+        "History": "Zgodovina",
+        "WatchTogether": "Glej skupaj"
+      },
+      "appbar": {
+        "Search": "Išči"
+      }
+    }
+  }
+}
